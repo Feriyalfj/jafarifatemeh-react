@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Call API Whit Ajax</title>
+    <style>
+      .album-box {
+        width: 150px;
+        height: 100px;
+        margin: 15px;
+        padding: 10px;
+        float: left;
+        box-shadow: 4px 4px 4px #444;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Call API Whit Ajax</h1>
+    <button onclick="getAlbumsWhitAjax()">Show Album</button>
+    <hr />
+    <div id="container"></div>
+
+    <script>
+      function getAlbumsWhitAjax() {
+        let request = new XMLHttpRequest();
+        request.open("GET", "https://jsonplaceholder.typicode.com/photos");
+
+        request.onreadystatechange = function () {
+          if (this.readyState === 4 && this.status === 200) {
+            generateAlbumsBox(JSON.parse(this.responseText));
+            // document.querySelector("#container").innerHTML = this.responseText;
+          }
+        };
+        request.send();
+      }
+
+      function generateAlbumsBox(data) {
+        for (let i = 0; i < data.length; i++) {
+          createBox(data[i]);
+        }
+      }
+
+      function createBox(album) {
+        let img = document.createElement("img");
+        img.setAttribute("src", album.url);
+        img.classList.add("album-box");
+
+        let title = document.createElement("h3");
+        title.innerText = album.id;
+
+        let albumEl = document.createElement("p");
+        albumEl.innerText = album.title;
+
+        let box = document.createElement("div");
+
+        box.appendChild(title);
+        box.appendChild(img);
+        box.appendChild(albumEl);
+        document.getElementById("container").appendChild(box);
+      }
+
+      // function getAlbumsWhitAjax() {
+      //   var collection = document.getElementsByTagName("img");
+      //   var i;
+      //   for(i=0; i<collection.length; i++) {
+      //     collection[i].style.width = "150px";
+      //     collection[i].style.height = "100px";
+
+      //   }
+      // }
+    </script>
+  </body>
+</html>
